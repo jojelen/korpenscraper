@@ -13,6 +13,13 @@ parser.add_argument(
     help="json data of matches",
     default="matches.json",
 )
+parser.add_argument(
+    "-s",
+    dest="series",
+    type=str,
+    help="Series name",
+    default=None,
+)
 
 
 class Team:
@@ -137,8 +144,13 @@ def main(args):
     team = Team(args.team)
 
     for game in data:
-        team.addGame(game)
+        if args.series is None or args.series.lower() == game['header'].lower():
+            team.addGame(game)
 
+    if args.series is not None:
+        print(args.series)
+
+    print('NOTE: No walk-overs included')
     team.printStats()
 
 

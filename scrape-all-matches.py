@@ -102,6 +102,9 @@ def getPlayers(browser):
         for member in members:
             if not isValidPlayerName(member):
                 continue
+            if not member[0].isdigit():
+                continue
+
             member = member.lstrip("0123456789")
             if member != "":
                 players[i].append(member)
