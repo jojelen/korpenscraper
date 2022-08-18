@@ -26,6 +26,9 @@ parser.add_argument(
 parser.add_argument(
     "-i", dest="maxmatchid", type=int, help="Max match id", default=4000
 )
+parser.add_argument(
+    "-j", dest="minmatchid", type=int, help="Min match id", default=1
+)
 
 
 def openKorpen():
@@ -219,7 +222,7 @@ def scrapeAllMatches(browser, args):
     skip_matches.update(getMatchIdxs(args.matchesfile))
     skip_matches.update(getMatchIdxs(args.failuresfile))
 
-    for i in range(1, args.maxmatchid):
+    for i in range(args.minmatchid, args.maxmatchid):
         if i not in skip_matches:
             print("Scraping match nr ", i)
             try:

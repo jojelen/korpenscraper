@@ -20,6 +20,13 @@ parser.add_argument(
     help="Series name",
     default=None,
 )
+parser.add_argument(
+    "-o",
+    dest="output",
+    type=str,
+    help="Output file",
+    default=None,
+)
 
 
 class Team:
@@ -114,7 +121,7 @@ class Team:
         self.stats.loc[self.name]["rec"] += scores[opp_idx]
         self.stats.loc[self.name]["matches"] += 1
 
-    def printStats(self):
+    def printStats(self, output):
         # Cast data.
         self.players = self.players.astype(int).sort_index()
         self.stats = self.stats.astype(int)
@@ -125,8 +132,14 @@ class Team:
         self.stats["goals/match"] = self.stats["goals"] / self.stats["matches"]
 
 
-        print(self.stats)
-        print(self.players)
+        if output:
+            with open(output, 'w+') as f:
+                print(args.series, file=f)
+                print(self.stats, file=f)
+                print(self.players, file=f)
+        else:
+            print(self.stats)
+            print(self.players)
 
 
 def getMatches(file_path):
@@ -151,7 +164,7 @@ def main(args):
         print(args.series)
 
     print('NOTE: No walk-overs included')
-    team.printStats()
+    team.printStats(args.output)
 
 
 if __name__ == "__main__":
